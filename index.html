@@ -1,2 +1,113 @@
-# q-med
- 2 سويت لكم اختبار لمادة مبادئ المحاسبه
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>اختبار مبادئ المحاسبة (2)</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--tx:#111;--mu:#666;--bd:#d5d9de;--ac:#0b7a4b;--ok:#d8f3e3;--no:#fbdcdc}
+@media(prefers-color-scheme:dark){:root{--bg:#15181b;--card:#1f2327;--tx:#f1f1f1;--mu:#a0a6ad;--bd:#3a4047;--ac:#3ec585;--ok:#173d2a;--no:#4a2020}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Tahoma,Arial,sans-serif;line-height:1.7}
+.w{max-width:640px;margin:0 auto;padding:16px}
+.cr{text-align:center;font-weight:bold;font-size:15px;padding:12px 0 0;opacity:.35}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px;margin-bottom:12px}
+h1{font-size:22px;margin:0 0 6px}h2{font-size:18px;margin:0 0 12px;line-height:1.6}
+.m{color:var(--mu);font-size:14px}
+.bar{height:8px;background:var(--bd);border-radius:6px;overflow:hidden;margin:8px 0 14px}
+.bar i{display:block;height:100%;background:var(--ac);width:0;transition:width .3s}
+button{font:inherit;color:inherit;cursor:pointer}
+input{font:inherit;color:var(--tx);background:var(--card);border:1.5px solid var(--bd);border-radius:10px;padding:11px 14px;width:100%;margin:8px 0 6px}
+.o{display:block;width:100%;text-align:right;background:var(--card);border:1.5px solid var(--bd);border-radius:10px;padding:11px 14px;margin:8px 0}
+.o:hover:not(:disabled){border-color:var(--ac)}
+.o.ok{background:var(--ok);border-color:var(--ac)}.o.no{background:var(--no);border-color:#c0392b}
+.b{background:var(--ac);color:#fff;border:0;border-radius:10px;padding:11px 22px;font-weight:bold}
+.s{font-size:44px;font-weight:bold;text-align:center;margin:6px 0}
+.r{border-top:1px solid var(--bd);padding:10px 0;font-size:15px}
+.r b{color:var(--ac)}
+</style>
+</head>
+<body>
+<div class="cr">&#8234;@Hassan.Faisal&#8236;</div>
+<div class="w" id="app"></div>
+<script>
+const ENDPOINT="https://formspree.io/f/mbgdqoed";
+
+const Q=[
+["وفق نظام الجرد المستمر، الحساب الذي يحل محل المشتريات ومصروفاتها ومردوداتها هو:","ح/مخزون البضاعة","ح/تكلفة البضاعة المباعة","ح/المبيعات","ح/الدائنين"],
+["مصروفات نقل المشتريات في الجرد المستمر يُجعل بها:","ح/مخزون البضاعة مدين","ح/مخزون البضاعة دائن","ح/مصروفات النقل مدين","ح/تكلفة البضاعة المباعة مدين"],
+["قيد مردودات المشتريات في الجرد المستمر:","من ح/الدائنين إلى ح/مخزون البضاعة","من ح/مخزون البضاعة إلى ح/الدائنين","من ح/المردودات إلى ح/الدائنين","من ح/النقدية إلى ح/المخزون"],
+["الخصم النقدي المكتسب في الجرد المستمر يُجعل به:","ح/مخزون البضاعة دائن","ح/مخزون البضاعة مدين","ح/إيرادات أخرى دائن","ح/تكلفة المبيعات مدين"],
+["عدد القيود المحاسبية لكل عملية بيع في الجرد المستمر:","قيدان","قيد واحد","ثلاثة قيود","لا يوجد قيد"],
+["القيد الثاني لعملية البيع في الجرد المستمر:","من ح/تكلفة البضاعة المباعة إلى ح/المخزون","من ح/المخزون إلى ح/تكلفة البضاعة المباعة","من ح/المبيعات إلى ح/المخزون","من ح/المدينين إلى ح/المبيعات"],
+["قيد مردودات المبيعات بسعر التكلفة في الجرد المستمر:","من ح/المخزون إلى ح/تكلفة البضاعة المباعة","من ح/تكلفة البضاعة المباعة إلى ح/المخزون","من ح/مردودات المبيعات إلى ح/المخزون","من ح/المدينين إلى ح/المخزون"],
+["اشترت شركة بضاعة بـ 50,000 بشروط 2/10 صافي 30، ثم ردت 5,000 وسددت خلال فترة الخصم. المبلغ المدفوع نقداً:","44,100","45,000","49,000","44,000"],
+["باعت شركة بضاعة بـ 40,000 وردّ العميل 4,000 ثم سدد خلال الخصم 2%. النقدية المستلمة:","35,280","36,000","34,560","39,200"],
+["صافي المبيعات =","المبيعات – المردودات والمسموحات – الخصم المسموح به","المبيعات + المردودات – الخصم المكتسب","المبيعات – تكلفة البضاعة المباعة","المبيعات – المصروفات التشغيلية"],
+["تكلفة المشتريات =","صافي المشتريات + مصروفات المشتريات","المشتريات – المردودات","صافي المشتريات – مصروفات المشتريات","المشتريات + بضاعة أول المدة"],
+["تكلفة البضاعة المباعة =","بضاعة أول المدة + تكلفة المشتريات – بضاعة آخر المدة","بضاعة آخر المدة + تكلفة المشتريات – بضاعة أول المدة","صافي المبيعات – صافي المشتريات","بضاعة أول المدة – تكلفة المشتريات + بضاعة آخر المدة"],
+["مبيعات 435,000 ومردودات مبيعات 2,000 وخصم مسموح به 4,000. صافي المبيعات:","429,000","433,000","431,000","441,000"],
+["بضاعة أول المدة 115,000 وتكلفة المشتريات 261,500 وبضاعة آخر المدة 120,000. تكلفة البضاعة المباعة:","256,500","261,500","266,500","376,500"],
+["بضاعة آخر المدة تظهر في قائمة المركز المالي ضمن:","الأصول المتداولة","الأصول الثابتة","الالتزامات المتداولة","حقوق الملكية"],
+["من إجراءات الرقابة على النقدية:","الفصل بين استلام النقدية وصرفها وتسجيلها","أن يتولى موظف واحد كل العمليات النقدية","إيداع المقبوضات كل أسبوع","الدفع نقداً لجميع المدفوعات"],
+["المبيعات النقدية 6,500 والنقدية الفعلية 6,450. يُسجل:","ح/عجز أو زيادة النقدية مدين 50","ح/عجز أو زيادة النقدية دائن 50","ح/النقدية مدين 6,500 فقط","ح/المبيعات مدين 50"],
+["قيد إنشاء صندوق المصروفات النثرية:","من ح/صندوق المصروفات النثرية إلى ح/النقدية","من ح/النقدية إلى ح/صندوق المصروفات النثرية","من ح/المصروفات إلى ح/الصندوق","من ح/رأس المال إلى ح/الصندوق"],
+["عند استعاضة صندوق المصروفات النثرية، حساب الصندوق:","لا يتأثر","يزيد بقيمة المصروفات","ينقص بقيمة المصروفات","يُقفل"],
+["رصيد البنك في دفاتر المنشأة يظهر:","مديناً","دائناً","صفراً","مديناً ودائناً معاً"],
+["الإيداعات بالطريق في مذكرة تسوية البنك:","تُضاف إلى رصيد كشف البنك","تُطرح من رصيد كشف البنك","تُضاف إلى رصيد دفاتر المنشأة","تُطرح من رصيد دفاتر المنشأة"],
+["الشيك المرفوض لعدم كفاية الرصيد (NSF):","يُطرح من رصيد دفاتر المنشأة","يُضاف إلى رصيد دفاتر المنشأة","يُطرح من رصيد كشف البنك","يُضاف إلى رصيد كشف البنك"],
+["الشيكات التي لم تقدم للصرف:","تُطرح من رصيد كشف البنك","تُضاف إلى رصيد كشف البنك","تُطرح من رصيد دفاتر المنشأة","لا تؤثر في التسوية"],
+["رصيد دفاتر المنشأة 11,588، وتسويات: +1,000 +50 +36 –15 –30 –425. الرصيد المعدل:","12,204","11,588","12,674","11,134"],
+["شروط التسليم محل البائع تعني أن ملكية البضاعة بالطريق:","تنتقل للمشتري عند تسليمها لشركة النقل","تبقى للبائع حتى وصولها للمشتري","تنتقل للمشتري عند الدفع","تنتقل لشركة النقل"],
+["بضاعة الأمانة تبقى ملكيتها:","للمنشأة التي أودعت البضاعة","للمنشأة المودَع لديها","لشركة النقل","للبنك"],
+["الطريقة الممنوعة في المعايير الدولية للتقرير المالي (IFRS):","الوارد أخيراً صادر أولاً LIFO","الوارد أولاً صادر أولاً FIFO","متوسط التكلفة","التمييز المحدد"],
+["في فترات ارتفاع الأسعار، الطريقة التي تعطي أعلى صافي دخل وأعلى مخزون آخر المدة:","FIFO","LIFO","متوسط التكلفة","جميعها متساوية"],
+["البضاعة المتاحة 100 وحدة بتكلفة 22,000 والمتبقي 45 وحدة. مخزون آخر المدة بطريقة المتوسط:","9,900","12,100","10,300","9,500"],
+["بضاعة آخر المدة أقل من قيمتها الحقيقية يؤدي إلى:","تكلفة بضاعة مباعة مضخمة وصافي دخل مخفض","تكلفة بضاعة مباعة مخفضة وصافي دخل مضخم","تكلفة مضخمة وصافي دخل مضخم","لا أثر"]
+];
+
+const app=document.getElementById("app");
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+let order,i,score,wrong,NAME="";
+
+function start(){
+ order=sh(Q.map((_,k)=>k));i=0;score=0;wrong=[];
+ app.innerHTML=`<div class="c"><h1>اختبار مبادئ المحاسبة (2)</h1><p class="m">${Q.length} سؤال اختيار من متعدد: الجرد المستمر، القوائم المالية، النقدية، المخزون.</p><label class="m">اكتب اسمك (حروف فقط، 3 حروف أو أكثر):</label><input id="nm" maxlength="40" placeholder="اسمك" value="${esc(NAME)}"><div id="er" class="m" style="color:#c0392b;min-height:22px"></div><button class="b" id="go">ابدأ الاختبار</button></div>`;
+ const nm=document.getElementById("nm"),er=document.getElementById("er");
+ nm.oninput=()=>{nm.value=nm.value.replace(/[^\u0621-\u063F\u0641-\u064Aa-zA-Z ]/g,"").replace(/ {2,}/g," ");er.textContent=""};
+ document.getElementById("go").onclick=()=>{
+  const v=nm.value.trim();
+  if(v.replace(/ /g,"").length<3){er.textContent="اكتب اسمك بحروف فقط، 3 حروف أو أكثر";nm.focus();return}
+  NAME=v;show()};
+}
+function show(){
+ const q=Q[order[i]],opts=sh(q.slice(1));
+ app.innerHTML=`<div class="c"><div class="m">السؤال ${i+1} من ${Q.length} | الدرجة: ${score}</div><div class="bar"><i style="width:${i/Q.length*100}%"></i></div><h2>${q[0]}</h2><div id="ops"></div><div id="nx"></div></div>`;
+ const box=document.getElementById("ops");
+ opts.forEach(t=>{const b=document.createElement("button");b.className="o";b.textContent=t;b.onclick=()=>pick(b,t,q,box);box.appendChild(b)});
+}
+function pick(b,t,q,box){
+ const ok=t===q[1];
+ [...box.children].forEach(x=>{x.disabled=true;if(x.textContent===q[1])x.classList.add("ok")});
+ if(ok)score++;else{b.classList.add("no");wrong.push(q)}
+ const n=document.createElement("button");n.className="b";n.textContent=i+1<Q.length?"التالي":"عرض النتيجة";
+ n.onclick=()=>{i++;i<Q.length?show():end()};
+ document.getElementById("nx").appendChild(n);
+}
+function send(){
+ if(!ENDPOINT)return;
+ try{fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({name:NAME,score:score,total:Q.length,time:new Date().toLocaleString("ar")})}).catch(()=>{})}catch(e){}
+}
+function end(){
+ const p=Math.round(score/Q.length*100);
+ app.innerHTML=`<div class="c"><h1>النتيجة${NAME?" – "+esc(NAME):""}</h1><div class="s">${score} / ${Q.length}</div><p class="m" style="text-align:center">${p}% — ${p>=90?"ممتاز، جاهز للاختبار":p>=70?"مستواك كويس، راجع الأخطاء":"تحتاج مراجعة أكثر"}</p><div style="text-align:center"><button class="b" id="rs">أعد الاختبار</button></div></div>`+
+ (wrong.length?`<div class="c"><h2>أسئلة أخطأت فيها (${wrong.length})</h2>${wrong.map(q=>`<div class="r">${q[0]}<br><b>الصحيح: ${q[1]}</b></div>`).join("")}</div>`:"");
+ document.getElementById("rs").onclick=start;
+ window.scrollTo(0,0);
+ send();
+}
+start();
+</script>
+</body>
+</html>
